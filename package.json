@@ -1,0 +1,19 @@
+{
+  "name": "rest_node_shop",
+  "version": "1.0.0",
+  "description": "A nodejs restful api project(build a shop)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "node",
+    "restful",
+    "api"
+  ],
+  "author": "Jame Sandoval",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
