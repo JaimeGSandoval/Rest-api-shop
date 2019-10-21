@@ -1,14 +1,13 @@
 const express = require('express');
 const app = express();
+const router = express.Router();
+
+const productRoutes = require('./api/routes/products');
+const orderRoutes = require('./api/routes/orders');
 
 // use() will set up middleware
-app.use((req, res, next) => {
-    res.status(200).json({
-        message: 'Works like a charm'
-    });
-    res.end(console.log('We good'));
+app.use('/products', productRoutes);
+app.use('/orders', orderRoutes);
 
-
-});
 
 module.exports = app;
