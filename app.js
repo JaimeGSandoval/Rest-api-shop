@@ -2,11 +2,40 @@ const express = require('express');
 const app = express();
 // morgan is a package that logs request info (type of req, status, ms, etc) to the terminal console with each req
 const morgan = require('morgan');
+// Body parser does not parse files. Only url encoded data and json
+const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
 
 const productRoutes = require('./api/routes/products');
 const orderRoutes = require('./api/routes/orders');
 
+
+mongoose.connect('mongodb+srv://node-shop:' + process.env.MONGO_ATLAS_PW + '@rest-node-shop-bwh0z.mongodb.net/test?retryWrites=true&w=majority', {
+    // useMongoClient: true
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+});
+
 app.use(morgan('dev'));
+app.use(bodyParser.urlencoded({
+    // setting extended to false wil allow the parsing of only simple data, not rich data, whatever that means.
+    extended: false
+}));
+
+// extracts json data to make it readable
+app.use(bodyParser.json());
+
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Headers', 'Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'Authorization');
+    if (req.method === 'OPTIONS') {
+        res.header('Access-Control-Allow-Methods', 'PUT, PATCH, DELETE, GET, POST');
+        return res.status(200).json({});
+    }
+    next();
+});
+
+
 
 // use() will set up middleware
 app.use('/products', productRoutes);
