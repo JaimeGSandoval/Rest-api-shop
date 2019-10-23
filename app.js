@@ -18,6 +18,8 @@ mongoose.connect('mongodb+srv://node-shop:' + process.env.MONGO_ATLAS_PW + '@res
     useUnifiedTopology: true
 });
 
+mongoose.Promise = global.Promise;
+
 
 // SET UP THE MIDDLEWARE FOR REQ OBJECT WITH THE use()
 app.use(morgan('dev'));
