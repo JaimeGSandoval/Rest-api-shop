@@ -18,6 +18,7 @@ router.post('/signup', (req, res) => {
                message: 'Mail exists'
             })
          } else {
+
             bcrypt.hash(req.body.password, 10, (err, hash) => {
 
                if (err) {
@@ -62,16 +63,18 @@ router.post('/login', (req, res, next) => {
                message: 'Auth failed'
             });
          }
-
+         // USE THE COMPARE() METHOD FROM BCRYPT TO COMPARE TH PASSWORD BEING SENT FROM THE CLIENT TO THE SERVER VIA REQ.BODY.PASSWORD. IT'LL COMPARE IT TO THE PASSWORD STORED IN THE DB
          bcrypt.compare(req.body.password, user[0].password, (err, result) => {
+
+            // THIS IS NOT AN ERROR IF THEY PASSWORDS DON'T MATCH. ITS JUST A GENERAL ERROR FOR IF SOMETHING GOES WRONG
             if (err) {
                return res.status(401).json({
                   message: 'Auth failed'
                });
             };
 
+            // IF THE PASSWORDS DO MATCH, THEN A JWT OS CREATED FOR THEM THAT'LL LAST FOR ONE HOUR
             if (result) {
-
                const token = jwt.sign({
                   email: user[0].email,
                   userId: user[0].userId
@@ -84,6 +87,8 @@ router.post('/login', (req, res, next) => {
                   token: token
                });
             };
+
+            // THIS IS THE ERROR THAT'LL BE THROWN IF THE PASSWORDS DON'T MATCH
             res.status(401).json({
                message: 'Auth failed'
             });
@@ -115,7 +120,5 @@ router.delete('/:userId', (req, res, next) => {
          });
       });
 });
-
-
 
 module.exports = router;
